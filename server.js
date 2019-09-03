@@ -11,9 +11,7 @@ const http = require('http'),
     //port
     port = 3000;
 
-
-const dbAccessor = new DbAccessor(DB_FILE, TABLE_NAME);
-
+const dao = new DbAccessor(DB_FILE, TABLE_NAME);
 //Helper function for file name from url
 exports.getFileName = function getFileName(url) {
     if (url === '/') {
@@ -38,6 +36,7 @@ exports.getFile = function getFile(url) {
 };
 
 const server = http.createServer(function (request, response) {
+    console.log("sending info");
     if (request.method === 'GET') {
         exports.getFile(request.url)
             .then(file => {
@@ -52,86 +51,33 @@ const server = http.createServer(function (request, response) {
             });
 
     } else if (request.method === 'POST') {
-        handlePost(request, response)
+        handlePost(request).then(allItems=> {
+            if (allItems) {
+                allItems.forEach((item) => {
+                    console.log(item);
+                })
+            }
+            response.writeHead(200, "OK", {'Content-Type': 'text/plain'});
+            response.end();
+        });
     }
 });
 
-
-const handlePost = function (request, response) {
-    let dataString = '';
-    request.on('data', function (data) {
-        dataString += data
-    });
-    request.on('end', function () {
-        //TODO fix the input validation here
-        let name=JSON.parse(dataString).yourname.toString();
-        let newItem = new GroceryItem(name, false, 0);
-        newItem = dbAccessor.addGroceryItem(newItem);
-        //console.log(newItem._id);
-        response.writeHead(200, "OK", {'Content-Type': 'text/plain'});
-        response.end();
+const handlePost = function (request) {
+    return new Promise(resolve => {
+        let dataString = '';
+        request.on('data', function (data) {
+            dataString += data
+        });
+        request.on('end', function () {
+            let name = JSON.parse(dataString).yourname.toString();
+            let newItem = new GroceryItem(name, false, 0);
+            dao.addGroceryItem(newItem)
+                .then(item => {
+                    console.log(dao.getAllItems().length);
+                    resolve(dao.getAllItems());
+                });
+        });
     });
 };
-
-// const handleGet = function( request, response ) {
-//   const filename = dir + request.url.slice( 1 )
-//
-//   if( request.url === '/' ) {
-//     sendFile( response, 'public/index.html' )
-//   }else{
-//     sendFile( response, filename )
-//   }
-// }
-
-// const sendFile = function( response, filename ) {
-//    const type = mime.getType( filename )
-//
-//    fs.readFile( filename, function( err, content ) {
-//
-//      // if the error = null, then we've loaded the file successfully
-//      if( err === null ) {
-//
-//        // status code: https://httpstatuses.com
-//        response.writeHeader( 200, { 'Content-Type': type })
-//        response.end( content )
-//
-//      }else{
-//
-//        // file not found, error code 404
-//        response.writeHeader( 404 )
-//        response.end( '404 Error: File Not Found' )
-//
-//      }
-//    })
-// }
-
-//set up code
-//exports.updateTableContents = function () {
-//     db.all('SELECT * from Dreams', function(err, rows) {
-//         rows.forEach((row)=>{
-//             console.log(row.dream);
-//         })
-//     });
-// };
-
-// db.serialize(function(){
-//   if (!dbCreated) {
-//     db.run('CREATE TABLE Dreams (dream TEXT)');
-//     console.log('New table Dreams created!');
-//
-//     // insert default dreams
-//     db.serialize(function() {
-//       db.run('INSERT INTO Dreams (dream) VALUES ("Find and count some sheep"), ("Climb a really tall mountain"), ("Wash the dishes")');
-//     });
-//   }
-//   else {
-//     console.log('Database "Dreams" ready to go!');
-//     db.each('SELECT * from Dreams', function(err, row) {
-//       if ( row ) {
-//         console.log('record:', row);
-//       }
-//     });
-//   }
-// });
-
 server.listen(process.env.PORT || port);

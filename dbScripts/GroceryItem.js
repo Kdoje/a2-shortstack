@@ -37,6 +37,7 @@ class GroceryItem{
         let groceryItem = new GroceryItem(row.itemName, row.purchased, row.spot);
         //set the id from the database ID.
         groceryItem._id=row.id;
+        return groceryItem;
     }
 }
 exports.GroceryItem=GroceryItem;
