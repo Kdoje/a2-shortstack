@@ -1,1 +1,13 @@
 /*Style your own assignment! This is fun! */
+/**
+Color scheme
+Primary: #ffca28
+Primary-light:#fffd61
+Primary-dark: #c79a00
+Secondary: #81d4fa
+Secondary-light:#b6ffff
+Secondary-dark:#4ba3c7
+ */
+p{
+    color: red;
+}
