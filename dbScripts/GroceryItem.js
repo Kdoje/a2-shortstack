@@ -38,5 +38,15 @@ class GroceryItem{
         groceryItem._id=row.id;
         return groceryItem;
     }
+
+    /**
+     * see if two grocery items are equal by ids
+     * @param {GroceryItem}g1
+     * @param {GroceryItem}g2
+     * @returns {*}
+     */
+    static idEqual(g1, g2){
+        return g1._id === g2._id;
+    }
 }
 exports.GroceryItem=GroceryItem;

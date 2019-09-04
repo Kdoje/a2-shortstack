@@ -4,16 +4,17 @@ const remove = function (e) {
     e.preventDefault();
 
     const input = document.querySelector( '#yourname' ),
-        json = { yourname: 'hi' },
+        json = { yourname: input.value },
         body = JSON.stringify( json );
     console.log(body +'hi');
+    //this should remove the item with the specified id from the list
     fetch(CONSTANTS.REMOVE, {
         method:'POST',
         body
     })
         .then((response) => response.json())
-        .then(function (data) {
-            console.log(data);
+        .then(function (items) {
+            updateList(items);
         });
     return false
 };
@@ -32,14 +33,19 @@ const submit = function( e ) {
     })
         //get the response json and print the output
         .then((response)=>response.json())
-        .then(function (data) {
-            data.forEach((item)=>{
-                let list = document.getElementById('table_contents');
-                list.innerText+=item._id +" "+item.itemName+ ' \n';
-            })
+        .then(function (items) {
+            updateList(items);
         });
 
     return false
+};
+
+const updateList = function(items){
+    let list = document.getElementById('table_contents');
+    list.innerText="";
+    items.forEach((item)=>{
+        list.innerText+=item._id +" "+item.itemName+ ' \n';
+    })
 };
 
 window.onload = function() {

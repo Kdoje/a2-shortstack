@@ -75,11 +75,46 @@ class DbAccessor {
     }
 
     /**
+     * This will get the item from the db, then delete it from the list and db
+     * @param {number} id the id of the object to delete
+     * @returns {List} the updated list (without the object)
+     */
+    removeGroceryById(id) {
+        let that = this;
+        let toDelete = null;
+        return new Promise(resolve => {
+            this._db.serialize(function () {
+                console.log(id+ " is id to remove");
+                console.log(typeof id);
+                that._db.get(`SELECT * FROM ${that._tableName} ` + 'WHERE id=?', [id], function (err, row) {
+                    if (err) {
+                        throw new Error("couldn't get item");
+                    }
+                    toDelete = GroceryItem.groceryItemFromDB(row);
+                });
+                that._db.run(`DELETE FROM ${that._tableName} ` + 'WHERE id=?', [id], function (err) {
+                    if (err) {
+                        throw new Error("couldn't get item");
+                    }
+                    that._groceryList.delete(toDelete, GroceryItem.idEqual);
+                    resolve(that._groceryList)
+                });
+            });
+        });
+    }
+    /**
      * This removes an item from the list
      * @param {GroceryItem} item
+     * @Return {List} with the item removed from it
      */
-    removeGroceryItem(item) {
-
+    removeGroceryByItem(item) {
+        let that = this;
+        return new Promise(resolve => {
+            that._db.run(`DELETE FROM ${that._tableName} WHERE `+
+            'id=?', [item._id], function (err) {
+                that._groceryList.delete(item, );
+            })
+        })
     }
 
     /**

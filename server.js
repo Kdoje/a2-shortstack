@@ -61,9 +61,34 @@ const server = http.createServer(function (request, response) {
                     response.end(JSON.stringify(allItems));
                 }
             });
+        } else if(request.url === CONSTANTS.REMOVE){
+            deleteItem(request).then(allItems=>{
+                if(allItems){
+                    response.end(JSON.stringify(allItems));
+                }
+            })
         }
     }
 });
+
+const deleteItem = function(request){
+    return new Promise(resolve => {
+        let dataString = '';
+        request.on('data', function (data) {
+            dataString += data
+        });
+        request.on('end', function () {
+            console.log(dataString +" to delete id");
+            let id = JSON.parse(dataString).yourname.toString();
+            id = parseInt(id);
+            dao.removeGroceryById(id)
+                .then(allItems => {
+                    console.log(dao.getAllItems().length);
+                    resolve(dao.getAllItems());
+                });
+        });
+    });
+};
 
 const updateItems = function (request) {
     return new Promise(resolve => {
