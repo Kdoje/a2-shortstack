@@ -18,7 +18,6 @@ class GroceryItem{
         this.itemName=itemName;
         this.purchased=purchased;
         this.spot=spot;
-        //this._id=dbAccessor.addGroceryItem(this);
     }
 
     /**

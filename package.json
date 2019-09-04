@@ -4,11 +4,12 @@
   "description": "WPI CS4241 second assignment",
   "author": "Kent Libby (klibby@wpi.edu)",
   "scripts": {
-    "start": "node server.js",
+    "start": "node -r esm server.js",
     "test": "jasmine"
   },
   "dependencies": {
     "collections": "^5.1.9",
+    "esm": "^3.2.25",
     "jasmine": "^3.4.0",
     "mime": "^2.4.4",
     "sqlite3": "^4.1.0"

@@ -1,5 +1,7 @@
 'use strict';
 
+import CONSTANTS from './public/js/constants.mjs';
+
 const http = require('http'),
     fs = require('fs'),
     mime = require('mime'),
@@ -36,7 +38,6 @@ exports.getFile = function getFile(url) {
 };
 
 const server = http.createServer(function (request, response) {
-    console.log("sending info");
     if (request.method === 'GET') {
         exports.getFile(request.url)
             .then(file => {
@@ -51,25 +52,27 @@ const server = http.createServer(function (request, response) {
             });
 
     } else if (request.method === 'POST') {
-        handlePost(request).then(allItems=> {
-            if (allItems) {
-                allItems.forEach((item) => {
-                    console.log(item);
-                })
-            }
-            response.writeHead(200, "OK", {'Content-Type': 'text/plain'});
-            response.end();
-        });
+        response.writeHead(200, "OK", {'Content-Type': 'text/plain'});
+        console.log(request.url);
+        if(request.url === CONSTANTS.SUBMIT) {
+            updateItems(request).then(allItems => {
+                if (allItems) {
+                    //send the response a json string
+                    response.end(JSON.stringify(allItems));
+                }
+            });
+        }
     }
 });
 
-const handlePost = function (request) {
+const updateItems = function (request) {
     return new Promise(resolve => {
         let dataString = '';
         request.on('data', function (data) {
             dataString += data
         });
         request.on('end', function () {
+            console.log(dataString +"string val");
             let name = JSON.parse(dataString).yourname.toString();
             let newItem = new GroceryItem(name, false, 0);
             dao.addGroceryItem(newItem)
