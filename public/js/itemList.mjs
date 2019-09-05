@@ -25,7 +25,9 @@ const attachListeners = function () {
     let removeButtons = document.getElementsByClassName(CONSTANTS.REMOVED);
     for (const buttons of removeButtons) {
         buttons.onclick = removeItem;
-        purchasedButtons.onclick = purchaseItem;
+    }
+    for (const buttons of purchasedButtons){
+        buttons.onclick=purchaseItem;
     }
 };
 
@@ -43,7 +45,16 @@ export const insertItem = function (item) {
      </div>`;
     console.log("id is " + item._id);
     //TODO Figure out why adding a listener to one specific element removes them for the others.
-    attachListeners();
+    //to see the issue, create a few items by typing the name and clicking submit
+    // then refresh the page. if you click the buttons on the right of the items
+    // in the data div, they will delete. However if you add another item, only the
+    // delete button of the bottom-most object will work and I'm not sure why
+    let div = document.getElementById(item._id);
+    let button = div.getElementsByClassName(CONSTANTS.REMOVED)[0];
+    button.onclick = removeItem;
+    //commenting out the above 3 lines and uncommenting the below line
+    //makes the website work
+    //attachListeners();
 };
 
 const removeItem = function () {
