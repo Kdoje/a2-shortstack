@@ -1,4 +1,5 @@
 import CONSTANTS from './constants.mjs';
+import {insertItem} from './itemList.mjs';
 
 const remove = function (e) {
     e.preventDefault();
@@ -26,18 +27,19 @@ const submit = function( e ) {
     const input = document.querySelector( '#yourname' ),
         json = { yourname: input.value },
         body = JSON.stringify( json );
-        console.log(body);
     fetch( CONSTANTS.SUBMIT, {
         method:'POST',
         body
     })
         //get the response json and print the output
         .then((response)=>response.json())
-        .then(function (items) {
-            updateList(items);
+        .then(function (item) {
+            console.log("sending item");
+            //this should put the item into the divs when its submitted.
+            insertItem(item);
         });
 
-    return false
+    return false;
 };
 
 const updateList = function(items){
@@ -47,12 +49,9 @@ const updateList = function(items){
         list.innerText+=item._id +" "+item.itemName+ ' \n';
     })
 };
-
-window.onload = function() {
-    const addButton = document.querySelector( 'button' );
+    //TODO change this to use addListener
+    const addButton = document.getElementById( 'submit' );
     const deleteButton=document.getElementById('delete');
     addButton.onclick = submit;
-    deleteButton.onclick = remove;
-};
 
 console.log("Welcome to assignment 2!");

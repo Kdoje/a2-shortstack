@@ -2,16 +2,16 @@ let server = require('../server');
 
 describe("getFileName", function() {
     const request_slash = '/';
-    const request_norm_url = '/public/css/style.css';
+    const request_norm_url = '/public/css/items.css';
 
     it("Should return ./public/index.html", function(){
         let filename = server.getFileName(request_slash);
         expect(filename).toBe('./public/index.html');
     });
 
-    it("Should return ./css/style.css", function () {
+    it("Should return ./css/items.css", function () {
         let filename = server.getFileName(request_norm_url);
-        expect(filename).toBe('./public/css/style.css');
+        expect(filename).toBe('./public/css/items.css');
     });
     console.log("get filename succeeded");
 });

@@ -108,6 +108,7 @@ class DbAccessor {
      * @Return {List} with the item removed from it
      */
     removeGroceryByItem(item) {
+        //TODO make this acutally delete the item from the db
         let that = this;
         return new Promise(resolve => {
             that._db.run(`DELETE FROM ${that._tableName} WHERE `+
@@ -119,6 +120,8 @@ class DbAccessor {
 
     /**
      * This gets all grocery items in the table
+     * Because of the way the insertions and removals work, this is all of the items
+     * in the DB memory
      * @return {List}
      */
     getAllItems() {

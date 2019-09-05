@@ -1,0 +1,53 @@
+/*Style your own assignment! This is fun! */
+/**
+Color scheme
+Primary: #ffca28
+Primary-light:#fffd61
+Primary-dark: #c79a00
+Secondary: #81d4fa
+Secondary-light:#b6ffff
+Secondary-dark:#4ba3c7
+ */
+p{
+    color: #ffdf00;
+}
+.data{
+    margin-top: 1em;
+    margin-right: 25%;
+    width: 50%;
+    margin-left: 25%;
+    background-color: green;
+}
+.item{
+    background-color: blue;
+
+    margin-top: 1em;
+    height: 50px;
+    width:100%;
+
+    display: flex;
+    /*align-content: flex-start;*/
+    flex-direction: row;
+}
+
+.item *{
+    align-self: center;
+    margin-right: 1em;
+}
+
+.item button {
+    height: 100%;
+    width: 15%;
+    max-width: 50px;
+}
+
+
+.item p{
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.item button.removed{
+    margin-left:auto;
+    margin-right: 0;
+}

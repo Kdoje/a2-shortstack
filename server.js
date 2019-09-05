@@ -50,26 +50,46 @@ const server = http.createServer(function (request, response) {
                 response.statusMessage = "File not found with error: " + err;
                 response.end();
             });
-
     } else if (request.method === 'POST') {
         response.writeHead(200, "OK", {'Content-Type': 'text/plain'});
         console.log(request.url);
+        //figure out which function the user wants to call
+        let requestOutput=null;
+
         if(request.url === CONSTANTS.SUBMIT) {
-            updateItems(request).then(allItems => {
+            requestOutput=updateItems(request);
+        } else if(request.url === CONSTANTS.REMOVE){
+            requestOutput=deleteItem(request);
+        } else if(request.url === CONSTANTS.GETALL){
+            requestOutput=getAllGroceryItems(request);
+        }
+        //then resolve it
+        if(requestOutput){
+            requestOutput.then(allItems => {
                 if (allItems) {
                     //send the response a json string
                     response.end(JSON.stringify(allItems));
                 }
             });
-        } else if(request.url === CONSTANTS.REMOVE){
-            deleteItem(request).then(allItems=>{
-                if(allItems){
-                    response.end(JSON.stringify(allItems));
-                }
-            })
+        }
+        else{
+            console.log("no url match");
+            response.end();
         }
     }
 });
+
+const getAllGroceryItems = function(request){
+    return new Promise(resolve => {
+        let dataString = '';
+        request.on('data', function (data) {
+            dataString += data
+        });
+        request.on('end', function () {
+            resolve(dao.getAllItems());
+        });
+    });
+};
 
 const deleteItem = function(request){
     return new Promise(resolve => {
@@ -101,9 +121,10 @@ const updateItems = function (request) {
             let name = JSON.parse(dataString).yourname.toString();
             let newItem = new GroceryItem(name, false, 0);
             dao.addGroceryItem(newItem)
+                //we only want single item we added so we have an id
                 .then(item => {
-                    console.log(dao.getAllItems().length);
-                    resolve(dao.getAllItems());
+                    console.log(item._id);
+                    resolve(item);
                 });
         });
     });
