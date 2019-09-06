@@ -21,11 +21,14 @@ const populateList = function () {
 };
 
 const attachListeners = function () {
-    let purchasedButtons = document.getElementsByClassName(CONSTANTS.PURCHASED);
-    let removeButtons = document.getElementsByClassName(CONSTANTS.REMOVED);
+    let purchasedButtons = document.getElementsByClassName(CONSTANTS.PURCHASE_BUTTON);
+    let removeButtons = document.getElementsByClassName(CONSTANTS.REMOVE_BUTTON);
     for (const buttons of removeButtons) {
-        buttons.onclick = removeItem;
-        purchasedButtons.onclick = purchaseItem;
+        buttons.onclick = removeItem.bind(buttons);
+    }
+    console.log("button length list " +purchasedButtons.length);
+    for (const buttons of purchasedButtons){
+        buttons.onclick = purchaseItem.bind(buttons);
     }
 };
 
@@ -35,18 +38,23 @@ const attachListeners = function () {
  * @param item - json string
  */
 export const insertItem = function (item) {
+    let divClass= item.purchased ? CONSTANTS.PURCHASED_ITEM : CONSTANTS.ITEM;
+    console.log(divClass);
     getContainer().innerHTML +=
-        `<div class="item" id=${item._id}>
-          <button class=${CONSTANTS.PURCHASED}></button>
+        `<div class="${divClass}" id=${item._id}>
+          <button class=${CONSTANTS.PURCHASE_BUTTON}></button>
           <p>${item.itemName}</p>
-          <button class=${CONSTANTS.REMOVED}></button>
+          <button class=${CONSTANTS.REMOVE_BUTTON}></button>
      </div>`;
+
     console.log("id is " + item._id);
-    //TODO Figure out why adding a listener to one specific element removes them for the others.
+    // Assigning the handlers individually breaks the other listeners so I
+    // need to assign them all here.
     attachListeners();
 };
 
 const removeItem = function () {
+    console.log(this);
     let thisParent = this.parentNode;
     let id = thisParent.id;
     const body = JSON.stringify({yourname: id});
@@ -66,15 +74,21 @@ const removeItem = function () {
 const purchaseItem = function () {
     let thisParent = this.parentNode;
     let id = thisParent.id;
+    console.log('purchase id is '+id);
     const body = JSON.stringify({yourname: id});
-    fetch(CONSTANTS.UPDATE, {
+    fetch(CONSTANTS.PURCHASE, {
         method: 'POST',
         body
     })
         .then((response) => response.json())
-        .then(function (items) {
+        .then(function (purchased) {
+            console.log("purchased is "+purchased);
             //get rid of the object by calling the parent of the parent
-            thisParent.parentNode.removeChild(thisParent);
+            if(purchased){
+                thisParent.className=CONSTANTS.PURCHASED_ITEM;
+            }else{
+                thisParent.className=CONSTANTS.ITEM;
+            }
         });
     return false;
 };

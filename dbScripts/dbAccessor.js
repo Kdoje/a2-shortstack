@@ -84,7 +84,7 @@ class DbAccessor {
         let toDelete = null;
         return new Promise(resolve => {
             this._db.serialize(function () {
-                console.log(id+ " is id to remove");
+                console.log(id + " is id to remove");
                 console.log(typeof id);
                 that._db.get(`SELECT * FROM ${that._tableName} ` + 'WHERE id=?', [id], function (err, row) {
                     if (err) {
@@ -102,18 +102,40 @@ class DbAccessor {
             });
         });
     }
+
     /**
-     * This removes an item from the list
-     * @param {GroceryItem} item
-     * @Return {List} with the item removed from it
+     * This will take an item and toggle the purchased field and store it in the db
+     * @param {number} id
+     * @return {Promise<number>} the value of purchased
      */
-    removeGroceryByItem(item) {
-        //TODO make this acutally delete the item from the db
+    togglePurchase(id) {
         let that = this;
+        let newPurchaseVal = 1;
         return new Promise(resolve => {
-            that._db.run(`DELETE FROM ${that._tableName} WHERE `+
-            'id=?', [item._id], function (err) {
-                that._groceryList.delete(item, );
+            that._db.serialize(()=> {
+                //set initial value, then have it updated from the row, and
+                //stored back in the database
+
+                that._db.get(`SELECT * FROM ${that._tableName} ` + 'WHERE id=?', [id],
+                    function (err, row) {
+                        if (err) {
+                            throw new Error('SQL command failed');
+                        }
+                        newPurchaseVal=row.purchased ? 0: 1;
+                        console.log('purchaseVal type is '+ newPurchaseVal);
+                        console.log("value of purchase is "+JSON.stringify(row));
+
+                        that._db.run(`UPDATE ${that._tableName} SET  ${PURCHASED} = ` + '?'  +
+                            'WHERE id=?', [newPurchaseVal, id],
+                            function (err) {
+                                console.log("the value of new purchaseVal is " +newPurchaseVal);
+                                console.log(typeof newPurchaseVal);
+                                if (err) {
+                                    throw new Error('SQL command failed');
+                                }
+                                resolve(newPurchaseVal);
+                            })
+                    });
             })
         })
     }
@@ -128,14 +150,6 @@ class DbAccessor {
         return this._groceryList;
     }
 
-    /**
-     * changes all fields from the item at index ide to the fields in newItem
-     * @param {Number} id
-     * @param {GroceryItem} newItem
-     */
-    updateGroceryItem(id, newItem) {
-
-    }
 }
 
 exports.DbAccessor = DbAccessor;

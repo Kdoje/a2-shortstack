@@ -1,5 +1,5 @@
 import CONSTANTS from './constants.mjs';
-import {insertItem} from './itemList.mjs';
+import {insertItem} from './itemDisplay.mjs';
 
 const remove = function (e) {
     e.preventDefault();

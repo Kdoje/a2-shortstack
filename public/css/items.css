@@ -30,6 +30,10 @@ p{
     flex-direction: row;
 }
 
+.item.purchased{
+    background-color: red;
+}
+
 .item *{
     align-self: center;
     margin-right: 1em;
@@ -47,7 +51,7 @@ p{
     text-align: center;
 }
 
-.item button.removed{
+.item button.remove_button{
     margin-left:auto;
     margin-right: 0;
 }
