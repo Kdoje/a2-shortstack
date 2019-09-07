@@ -54,7 +54,7 @@ exports.deleteItem = function (request) {
     return new Promise(resolve => {
         exports.parseRequest(request).then((dataString) => {
             console.log(dataString + " to delete id");
-            let id = JSON.parse(dataString).yourname.toString();
+            let id = JSON.parse(dataString).id.toString();
             id = parseInt(id);
             dao.removeGroceryById(id)
                 .then(allItems => {
@@ -73,7 +73,7 @@ exports.updateItems = function (request) {
     return new Promise(resolve => {
         exports.parseRequest(request).then((dataString)=> {
             console.log(dataString +"string val");
-            let name = JSON.parse(dataString).yourname.toString();
+            let name = JSON.parse(dataString).item.toString();
             let newItem = new GroceryItem(name, false, 0);
             dao.addGroceryItem(newItem)
             //we only want single item we added so we have an id

@@ -10,7 +10,6 @@ const populateList = function () {
         method: 'POST',
         body
     })
-    //TODO use DOM purify to sanitize the html input
         .then((response) => response.json())
         .then(function (items) {
             items.forEach((item) => {
@@ -42,9 +41,9 @@ export const insertItem = function (item) {
     console.log(divClass);
     getContainer().innerHTML +=
         `<div class="${divClass}" id=${item._id}>
-          <button class=${CONSTANTS.PURCHASE_BUTTON}></button>
+          <button class=${CONSTANTS.PURCHASE_BUTTON}>✓</button>
           <p>${item.itemName}</p>
-          <button class=${CONSTANTS.REMOVE_BUTTON}></button>
+          <button class=${CONSTANTS.REMOVE_BUTTON}>X</button>
      </div>`;
 
     console.log("id is " + item._id);
@@ -57,7 +56,7 @@ const removeItem = function () {
     console.log(this);
     let thisParent = this.parentNode;
     let id = thisParent.id;
-    const body = JSON.stringify({yourname: id});
+    const body = JSON.stringify({id: id});
     console.log("the id of removal is " + id);
     fetch(CONSTANTS.REMOVE, {
         method: 'POST',
@@ -75,7 +74,7 @@ const purchaseItem = function () {
     let thisParent = this.parentNode;
     let id = thisParent.id;
     let purchased=false;
-
+    //use the class name to store the purchase value locally
     if(thisParent.className===CONSTANTS.ITEM){
         thisParent.className=CONSTANTS.PURCHASED_ITEM;
         purchased=true;

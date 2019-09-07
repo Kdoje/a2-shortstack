@@ -77,7 +77,6 @@ class DbAccessor {
         console.log("created");
         let that = this;
         this._groceryList.add(item);
-        //TODO determine how to gracefully handle db failure
         return new Promise(resolve => {
             that._db.run(`INSERT INTO ${that._tableName} (${SPOT}, ${ITEM_NAME}, ${PURCHASED}) `
                 + 'VALUES (?,?,?)',

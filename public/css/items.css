@@ -8,18 +8,17 @@ Secondary: #81d4fa
 Secondary-light:#b6ffff
 Secondary-dark:#4ba3c7
  */
-p{
-    color: #ffdf00;
+body {
+    background-color: #FFF1C2;
 }
 .data{
     margin-top: 1em;
     margin-right: 25%;
     width: 50%;
     margin-left: 25%;
-    background-color: green;
 }
 .item{
-    background-color: blue;
+    background-color: #7AFF9E;
 
     margin-top: 1em;
     height: 50px;
@@ -31,7 +30,7 @@ p{
 }
 
 .item.purchased{
-    background-color: red;
+    background-color: #BACFBF;
 }
 
 .item *{
@@ -40,9 +39,12 @@ p{
 }
 
 .item button {
+    border-style: none;
     height: 100%;
     width: 15%;
     max-width: 50px;
+    font-size: 1.5em;
+    background-color: #44B361;
 }
 
 
@@ -52,6 +54,8 @@ p{
 }
 
 .item button.remove_button{
+    background-color: #B33236;
     margin-left:auto;
     margin-right: 0;
+    font-size: 2em;
 }

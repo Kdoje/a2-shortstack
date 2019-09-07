@@ -1,31 +1,13 @@
 import CONSTANTS from './constants.mjs';
 import {insertItem} from './itemDisplay.mjs';
 
-const remove = function (e) {
-    e.preventDefault();
 
-    const input = document.querySelector( '#yourname' ),
-        json = { yourname: input.value },
-        body = JSON.stringify( json );
-    console.log(body +'hi');
-    //this should remove the item with the specified id from the list
-    fetch(CONSTANTS.REMOVE, {
-        method:'POST',
-        body
-    })
-        .then((response) => response.json())
-        .then(function (items) {
-            updateList(items);
-        });
-    return false
-};
 
 const submit = function( e ) {
     // prevent default form action from being carried out
     e.preventDefault();
-
     const input = document.querySelector( '#yourname' ),
-        json = { yourname: input.value },
+        json = { item: input.value },
         body = JSON.stringify( json );
     fetch( CONSTANTS.SUBMIT, {
         method:'POST',
@@ -38,7 +20,7 @@ const submit = function( e ) {
             //this should put the item into the divs when its submitted.
             insertItem(item);
         });
-
+    input.value="";
     return false;
 };
 
@@ -49,7 +31,6 @@ const updateList = function(items){
         list.innerText+=item._id +" "+item.itemName+ ' \n';
     })
 };
-    //TODO change this to use addListener
     const addButton = document.getElementById( 'submit' );
     const deleteButton=document.getElementById('delete');
     addButton.onclick = submit;
