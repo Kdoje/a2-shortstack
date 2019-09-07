@@ -20,7 +20,7 @@ cause the site to lag.
 - Press the checkbox to mark an item as purchased, and click the x button to delete it.
 - If you access the list from another device, the items will be synchronized across both.
 
-##Rubric notes:
+## Rubric notes:
 - a `Server` The server.js file handles serving files, and the dbAccessor handles the data storage and updates.
 - a `Results` the dbAccessor's class getAllItems will return all items in memory.
 - a `Form/Entry` This is the item input bar and the "cards" generated when an item is added
