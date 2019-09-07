@@ -23,20 +23,37 @@ class DbAccessor {
         this._groceryList = new List();
         let that = this;
         //create the grocery table and update the list
-        this._db.serialize(function () {
+        let conPromise = new Promise((resolve) => {
+            this._db.serialize(function () {
 
-            that._db.run(`CREATE TABLE IF NOT EXISTS ${that._tableName} (
+                that._db.run(`CREATE TABLE IF NOT EXISTS ${that._tableName} (
                           id INTEGER PRIMARY KEY AUTOINCREMENT,
                           ${SPOT} INTEGER,
                           ${ITEM_NAME} TEXT,
                           ${PURCHASED} BOOLEAN)`, [],
-                (err) => {
-                    if (err) {
-                        console.log(err);
+                    (err) => {
+                        if (err) {
+                            console.log(err);
+                        }
                     }
-                }
-            );
+                );
 
+            });
+        });
+        conPromise.then(() => {
+            console.log("returning item");
+        })
+
+    }
+
+    /**
+     * populates the item list of this object
+     * @returns {Promise<undefined>}
+     */
+    initItemList(){
+        let that = this;
+        that._groceryList=new List();
+        return new Promise((resolve) => {
             that._db.all(`SELECT * FROM ${that._tableName}`, [], function (err, rows) {
                 if (err) {
                     console.log(err);
@@ -44,11 +61,11 @@ class DbAccessor {
                 if (rows) {
                     rows.forEach((row) => {
                         that._groceryList.add(GroceryItem.groceryItemFromDB(row));
-                    })
+                    });
+                    resolve();
                 }
             });
         });
-
     }
 
     /**
@@ -106,37 +123,23 @@ class DbAccessor {
     /**
      * This will take an item and toggle the purchased field and store it in the db
      * @param {number} id
+     * @param {boolean} newPurchaseVal: the value of purchased for this item
      * @return {Promise<number>} the value of purchased
      */
-    togglePurchase(id) {
+    togglePurchase(id, newPurchaseVal) {
         let that = this;
-        let newPurchaseVal = 1;
+        let newPurchaseInt = newPurchaseVal ? 1 : 0;
+        console.log("given id is "+id);
         return new Promise(resolve => {
-            that._db.serialize(()=> {
-                //set initial value, then have it updated from the row, and
-                //stored back in the database
-
-                that._db.get(`SELECT * FROM ${that._tableName} ` + 'WHERE id=?', [id],
-                    function (err, row) {
-                        if (err) {
-                            throw new Error('SQL command failed');
-                        }
-                        newPurchaseVal=row.purchased ? 0: 1;
-                        console.log('purchaseVal type is '+ newPurchaseVal);
-                        console.log("value of purchase is "+JSON.stringify(row));
-
-                        that._db.run(`UPDATE ${that._tableName} SET  ${PURCHASED} = ` + '?'  +
-                            'WHERE id=?', [newPurchaseVal, id],
-                            function (err) {
-                                console.log("the value of new purchaseVal is " +newPurchaseVal);
-                                console.log(typeof newPurchaseVal);
-                                if (err) {
-                                    throw new Error('SQL command failed');
-                                }
-                                resolve(newPurchaseVal);
-                            })
-                    });
-            })
+            that._db.run(`UPDATE ${that._tableName} SET  ${PURCHASED}=${newPurchaseInt} ` +
+                'WHERE id=?', [id],
+                function (err) {
+                    if (err) {
+                        throw new Error('SQL command failed');
+                    }
+                    console.log(newPurchaseInt);
+                    resolve();
+                })
         })
     }
 

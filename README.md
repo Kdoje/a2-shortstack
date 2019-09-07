@@ -81,9 +81,12 @@ Here is a sample formula for summarizing your activities, talk about:
 http://a2-charlieroberts.glitch.me
 
 ## Technical Achievements
-- **Tech Achievement 1**: Using a combination of...
-- **Tech Achievement 2**: ...
+- **Fixed issue with dynamically attaching button listeners**
+- **Used Sqlite3 for database solutions**
+- **Used esm to import a file on the front and back end**
+- **Created unit tests for dbaccessor class**
+- **Enabled unit testing with esm**
 
 ### Design/Evaluation Achievements
-- **Design Achievement 1**: Shown in `style.css`, the code...
-- **Design Achievement 2**: We tested the application with n=X users, finding that...
+- **Optomized front end to display changes before writing them to the db**
+- **Used database for persistent data storage**

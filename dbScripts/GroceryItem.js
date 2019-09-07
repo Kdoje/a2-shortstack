@@ -33,7 +33,9 @@ class GroceryItem{
      * @return {GroceryItem}
      */
     static groceryItemFromDB(row){
-        let groceryItem = new GroceryItem(row.itemName, row.purchased, row.spot);
+        //because the bool is stored as 1 or 0, we need to update that here
+        let purchased = !!row.purchased;
+        let groceryItem = new GroceryItem(row.itemName, purchased, row.spot);
         //set the id from the database ID.
         groceryItem._id=row.id;
         return groceryItem;

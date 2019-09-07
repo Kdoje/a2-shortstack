@@ -74,21 +74,30 @@ const removeItem = function () {
 const purchaseItem = function () {
     let thisParent = this.parentNode;
     let id = thisParent.id;
-    console.log('purchase id is '+id);
-    const body = JSON.stringify({yourname: id});
+    let purchased=false;
+
+    if(thisParent.className===CONSTANTS.ITEM){
+        thisParent.className=CONSTANTS.PURCHASED_ITEM;
+        purchased=true;
+    }else{
+        thisParent.className=CONSTANTS.ITEM;
+        purchased=false;
+    }
+
+    let input = {
+        id: id,
+        purchased: purchased
+    };
+    let body = JSON.stringify(input);
+
     fetch(CONSTANTS.PURCHASE, {
         method: 'POST',
         body
     })
         .then((response) => response.json())
-        .then(function (purchased) {
+        .then(function () {
             console.log("purchased is "+purchased);
             //get rid of the object by calling the parent of the parent
-            if(purchased){
-                thisParent.className=CONSTANTS.PURCHASED_ITEM;
-            }else{
-                thisParent.className=CONSTANTS.ITEM;
-            }
         });
     return false;
 };

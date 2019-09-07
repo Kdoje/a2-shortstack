@@ -9,6 +9,7 @@ const DB_FILE = './.data/sqlite.db';
 const TABLE_NAME = 'Grocery';
 
 let dao = new DbAccessor(DB_FILE, TABLE_NAME);
+dao.initItemList().then();
 //this is for injection of a mock DbAccessor
 exports.setDao = function (daoToSet){
     dao=daoToSet;
@@ -37,7 +38,9 @@ exports.parseRequest = function(request){
  */
 exports.getAllGroceryItems = function(request){
     return new Promise(resolve => {
-        exports.parseRequest(request).then((dataString)=>{
+        exports.parseRequest(request).then(async function(dataString){
+            //make sure we get all changes to the item list when we send it out
+            await dao.initItemList();
             resolve(dao.getAllItems());
         });
     });
@@ -83,15 +86,16 @@ exports.updateItems = function (request) {
 };
 /**
  *
- * @param request
+ * @param request w/JSON of id <number>, purchased<boolean>
  * @returns {Promise<number>}
  */
 exports.togglePurchase = function(request){
+    //this will take the id and purchase value as a bool and update it
     return new Promise(resolve=>{
         exports.parseRequest(request).then((dataString)=>{
-            let id = JSON.parse(dataString).yourname;
-            dao.togglePurchase(id).then( purchase =>{
-                resolve(purchase);
+            let input = JSON.parse(dataString);
+            dao.togglePurchase(input.id, input.purchased).then( () =>{
+                resolve();
             })
         })
     })

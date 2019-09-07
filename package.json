@@ -5,7 +5,7 @@
   "author": "Kent Libby (klibby@wpi.edu)",
   "scripts": {
     "start": "node -r esm server.js",
-    "test": "jasmine"
+    "test": "node -r esm jasmineTestRunner.js"
   },
   "dependencies": {
     "collections": "^5.1.9",

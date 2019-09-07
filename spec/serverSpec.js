@@ -13,7 +13,6 @@ describe("getFileName", function() {
         let filename = server.getFileName(request_norm_url);
         expect(filename).toBe('./public/css/items.css');
     });
-    console.log("get filename succeeded");
 });
 
 describe("FileServer", function () {
