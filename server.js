@@ -1,14 +1,18 @@
 'use strict';
 
 import CONSTANTS from './public/js/constants.mjs';
+//express import
+const express = require('express');
+const app = express();
 
-const http = require('http'),
-    fs = require('fs'),
-    mime = require('mime'),
-    //database stuff
-    router = require('./postHandlers/postRequestRouter'),
-    //port
-    port = 3000;
+//http server imports
+const http = require('http');
+const fs = require('fs');
+const mime = require('mime');
+//database stuff
+const router = require('./postHandlers/postRequestRouter');
+//port
+const port = 3000;
 
 
 //Helper function for file name from url
@@ -34,50 +38,46 @@ exports.getFile = function getFile(url) {
     });
 };
 
-const server = http.createServer(function (request, response) {
-    if (request.method === 'GET') {
-        exports.getFile(request.url)
-            .then(file => {
-                const type = mime.getType(exports.getFileName(request.url));
-                response.writeHead(200, {'Content-Type': type});
-                response.end(file)
-            })
-            .catch(err => {
-                response.statusCode = 404;
-                response.statusMessage = "File not found with error: " + err;
-                response.end();
-            });
-    } else if (request.method === 'POST') {
-        response.writeHead(200, "OK", {'Content-Type': 'text/plain'});
-        console.log(request.url);
-        //figure out which function the user wants to call
-        let requestOutput=null;
+app.use(express.static(__dirname + '/public'));
 
-        //resolve the request based on the url
-        if(request.url === CONSTANTS.SUBMIT) {
-            requestOutput=router.updateItems(request);
-        } else if(request.url === CONSTANTS.REMOVE){
-            requestOutput=router.deleteItem(request);
-        } else if(request.url === CONSTANTS.GETALL){
-            requestOutput=router.getAllGroceryItems(request);
-        } else if(request.url === CONSTANTS.PURCHASE){
-            requestOutput=router.togglePurchase(request);
+app.post(CONSTANTS.GETALL, function(request, response){
+    let requestOutput = router.getAllGroceryItems(request);
+    requestOutput.then(allItems => {
+        if (allItems) {
+            //send the response a json string
+            response.end(JSON.stringify(allItems));
         }
-        //then resolve it
-        if(requestOutput){
-            requestOutput.then(allItems => {
-                if (allItems) {
-                    //send the response a json string
-                    response.end(JSON.stringify(allItems));
-                }
-            });
-        }
-        else{
-            console.log("no url match");
-            response.end();
-        }
-    }
+    });
 });
 
+app.post(CONSTANTS.SUBMIT, function(request, response){
+    let requestOutput = router.updateItems(request);
+    requestOutput.then(allItems => {
+        if (allItems) {
+            //send the response a json string
+            response.end(JSON.stringify(allItems));
+        }
+    });
+});
 
-server.listen(process.env.PORT || port);
+app.post(CONSTANTS.REMOVE, function(request, response){
+   let requestOutput = router.deleteItem(request);
+    requestOutput.then(allItems => {
+        if (allItems) {
+            //send the response a json string
+            response.end(JSON.stringify(allItems));
+        }
+    });
+});
+
+app.post(CONSTANTS.PURCHASE, function (request, response) {
+    let requestOutput = router.togglePurchase(request);
+    requestOutput.then(allItems => {
+        if (allItems) {
+            //send the response a json string
+            response.end(JSON.stringify(allItems));
+        }
+    });
+});
+
+app.listen(process.env.PORT || port);

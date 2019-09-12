@@ -10,6 +10,7 @@
   "dependencies": {
     "collections": "^5.1.9",
     "esm": "^3.2.25",
+    "express": "^4.17.1",
     "jasmine": "^3.4.0",
     "mime": "^2.4.4",
     "sqlite3": "^4.1.0"

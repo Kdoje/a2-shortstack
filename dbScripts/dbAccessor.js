@@ -51,6 +51,7 @@ class DbAccessor {
      * @returns {Promise<undefined>}
      */
     initItemList(){
+        //TODO have this store the highest ID so we don't have to block on submit requests
         let that = this;
         that._groceryList=new List();
         return new Promise((resolve) => {
