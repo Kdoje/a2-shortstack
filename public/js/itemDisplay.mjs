@@ -4,7 +4,7 @@ const getContainer = function () {
     return document.getElementById('data');
 };
 const populateList = function () {
-    getContainer().innerHTML = "";
+    //getContainer().innerHTML = "";
     const body = JSON.stringify('{}');
     fetch(CONSTANTS.GETALL, {
         method: 'POST',
@@ -59,6 +59,9 @@ const removeItem = function () {
     const body = JSON.stringify({id: id});
     console.log("the id of removal is " + id);
     fetch(CONSTANTS.REMOVE, {
+        headers:{
+            'Content-Type': 'application/json'
+        },
         method: 'POST',
         body
     })
@@ -90,6 +93,9 @@ const purchaseItem = function () {
     let body = JSON.stringify(input);
 
     fetch(CONSTANTS.PURCHASE, {
+        headers:{
+            'Content-Type': 'application/json'
+        },
         method: 'POST',
         body
     })

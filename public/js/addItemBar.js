@@ -6,10 +6,13 @@ import {insertItem} from './itemDisplay.mjs';
 const submit = function( e ) {
     // prevent default form action from being carried out
     e.preventDefault();
-    const input = document.querySelector( '#yourname' ),
+    const input = document.querySelector( '#item_input' ),
         json = { item: input.value },
         body = JSON.stringify( json );
     fetch( CONSTANTS.SUBMIT, {
+        headers:{
+            'Content-Type': 'application/json'
+        },
         method:'POST',
         body
     })

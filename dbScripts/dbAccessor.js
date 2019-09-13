@@ -6,7 +6,7 @@ const SPOT = 'spot',
     ITEM_NAME = 'itemName',
     PURCHASED = 'purchased';
 
-
+//TODO remove requriement to wait for db output before returning an answer
 class DbAccessor {
     _db;
     _tableName;

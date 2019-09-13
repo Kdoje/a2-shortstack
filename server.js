@@ -4,7 +4,7 @@ import CONSTANTS from './public/js/constants.mjs';
 //express import
 const express = require('express');
 const app = express();
-
+const bodyParser = require('body-parser');
 //http server imports
 const http = require('http');
 const fs = require('fs');
@@ -37,14 +37,15 @@ exports.getFile = function getFile(url) {
         })
     });
 };
-
+// Provide files from
+app.use('/materialize', express.static(__dirname + '/node_modules/materialize-css/dist'));
 app.use(express.static(__dirname + '/public'));
+app.use(bodyParser.json({type: 'application/json'}));
 
 app.post(CONSTANTS.GETALL, function(request, response){
     let requestOutput = router.getAllGroceryItems(request);
     requestOutput.then(allItems => {
         if (allItems) {
-            //send the response a json string
             response.end(JSON.stringify(allItems));
         }
     });
@@ -54,7 +55,6 @@ app.post(CONSTANTS.SUBMIT, function(request, response){
     let requestOutput = router.updateItems(request);
     requestOutput.then(allItems => {
         if (allItems) {
-            //send the response a json string
             response.end(JSON.stringify(allItems));
         }
     });
@@ -64,7 +64,6 @@ app.post(CONSTANTS.REMOVE, function(request, response){
    let requestOutput = router.deleteItem(request);
     requestOutput.then(allItems => {
         if (allItems) {
-            //send the response a json string
             response.end(JSON.stringify(allItems));
         }
     });
@@ -74,7 +73,6 @@ app.post(CONSTANTS.PURCHASE, function (request, response) {
     let requestOutput = router.togglePurchase(request);
     requestOutput.then(allItems => {
         if (allItems) {
-            //send the response a json string
             response.end(JSON.stringify(allItems));
         }
     });

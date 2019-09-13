@@ -8,10 +8,12 @@
     "test": "node -r esm jasmineTestRunner.js"
   },
   "dependencies": {
+    "body-parser": "latest",
     "collections": "^5.1.9",
     "esm": "^3.2.25",
     "express": "^4.17.1",
     "jasmine": "^3.4.0",
+    "materialize-css": "^1.0.0",
     "mime": "^2.4.4",
     "sqlite3": "^4.1.0"
   },
