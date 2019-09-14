@@ -7,90 +7,101 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <!--Import materialize_dep.css-->
   <link href="materialize/css/materialize.css" rel="stylesheet"/>
+  <link href="css/itemList.css" rel="stylesheet"/>
 
 </head>
 <nav>
-  <div class="nav-wrapper">
-    <a href="#" class="brand-logo center">Grocery List Online</a>
-    <ul id="nav-mobile" class="left hide-on-med-and-down">
-      <li><a href="index.html">Login</a></li>
-    </ul>
+  <div class="nav-wrapper light-green lighten-2">
+    <a href="#" class="brand-logo center black-text">Grocery List Online</a>
   </div>
 </nav>
-<body>
+
+<div class="fixed-action-btn">
+  <a class="btn-floating btn-large blue-grey darken-1 sidenav-trigger" data-target="slide-out">
+    <i class="large material-icons">person</i>
+  </a>
+</div>
+
+<body class="amber lighten-5">
 <!-- This is a centered element for reference-->
 <!--<div class="row">-->
 <!--  <h5 class="center-align">This should be vertically aligned</h5>-->
 <!--</div>-->
 
+
+<!--This is the login sidenav-->
+<ul id="slide-out" class="sidenav">
+  <li><div class="center-align light-green lighten-2 background">
+    <p><b>Log In Or Create Your List</b></p>
+  </div></li>
+  <li>
+    <div class="row input-field">
+      <input type="text" class="input item-input col s10 push-s1" id="uname">
+      <label for="uname" class="col push-s1 s10">list name</label>
+    </div>
+  </li>
+  <li>
+    <div class="row input-field">
+      <input type="password" class="input item-input col s10 push-s1" id="pword">
+      <label for="pword" class="col push-s1 s10">password</label>
+    </div>
+  </li>
+  <li>
+    <div class="row">
+      <button class="waves-effect waves-light blue-grey darken-1 btn-small col s3 push-s2" id="login">Login</button>
+      <button class="waves-effect waves-light blue-grey darken-1 btn-small col s3 push-s3" id="create_list">Create List</button>
+    </div>
+  </li>
+</ul>
+
+
+<!-- This is the input section-->
 <div class="row">
   <form class="" action="">
-    <div class="input-field col s3 push-s4">
-      <input type='text' class='input center-align' id="item_input">
+    <div class="input-field col s2 push-s4">
+      <input type='text' class='input center-align item-input' id="item_input">
       <label for="item_input">item</label>
     </div>
-    <div class="col push-s4 input-field">
-      <button class="waves-effect waves-light btn-small" id="submit">submit</button>
+    <div class="input-field col s1 push-s4">
+      <input type='text' class='input center-align item-input' id="qty_input">
+      <label for="qty_input">qty</label>
+    </div>
+    <div class="col push-s4 s1 input-field">
+      <button class="waves-effect waves-light blue-grey darken-1 btn-small" id="add">add</button>
     </div>
   </form>
 </div>
 
+<!-- This is the items section-->
 <div class="row">
-  <div class="col s8 offset-s2">
-    <ul class="collection">
-
-      <li class="collection-item">
-        <div class="row">
-          <div class="col s2 blue lighten-4 left-align">
-            <button class="waves-effect waves-light btn-small">submit</button>
-          </div>
-          <div class="col s8 center-align blue lighten-1">IM</div>
-          <div class="col s2 center-align blue lighten-4">
-            <button class="waves-effect waves-light btn-small">submit</button>
-          </div>
-        </div>
-      </li>
-
-      <li class="collection-item">
-        <div class="row valign-wrapper ">
-          <div class="col s2 center-align blue lighten-4">
-            <button class="waves-effect waves-light btn-small">submit</button>
-          </div>
-          <div class="col s8 center-align blue lighten-1">IM</div>
-          <div class="col s2 center-align blue lighten-4">
-            <button class="waves-effect waves-light btn-small">submit</button>
-          </div>
-        </div>
-      </li>
-
-      <li class="collection-item">
-        <div class="row valign-wrapper">
-          <div class="col s2 blue lighten-4">
-            <button class="waves-effect waves-light btn-small">submit</button>
-          </div>
-          <div class="col s8 center-align blue lighten-1">IM</div>
-          <div class="col s2 center-align blue lighten-4">
-            <button class="waves-effect waves-light btn-small">submit</button>
-          </div>
-        </div>
-      </li>
-
-      <li class="collection-item">
-        <div class="row">
-          <div class="col s2 center-align blue lighten-4">
-            <button class="waves-effect waves-light btn-small">submit</button>
-          </div>
-          <div class="col s8 center-align blue lighten-1">IM</div>
-          <div class="col s2 center-align blue lighten-4">
-            <button class="waves-effect waves-light btn-small">submit</button>
-          </div>
-        </div>
-      </li>
-
-
-    </ul>
+  <div class="card col s8 offset-s2 grey lighten-5 valign-wrapper">
+    <i class="small material-icons col m1 red-text text-darken-2 removal">delete</i>
+    <label class="col m1 valign-wrapper center">
+      <input type="checkbox"/>
+      <span class="black-text input center"></span>
+    </label>
+    <input type='text' class='input col m7 tester' id='item_1'>
+    <label for="item_1"></label>
+    <i class="small material-icons col m1 removal center red-text text-lighten-1">remove_circle</i>
+    <input type='text' class='input col m1 center-align' id='qty_1'> <label for="qty_1"></label>
+    <i class="small material-icons col m1 removal center green-text text-lighten-1">add_circle</i>
   </div>
-</div>
+
+
+  <div class="card col s8 offset-s2 grey lighten-5 valign-wrapper">
+    <i class="small material-icons col m1 red-text text-darken-2 removal">delete</i>
+    <label class="col m1 valign-wrapper center">
+      <input type="checkbox"/>
+      <span class="black-text input center"></span>
+    </label>
+    <input type='text' class='input col m7' id='test'>
+    <label for="test"></label>
+    <i class="small material-icons col m1 removal center red-text text-lighten-1">remove_circle</i>
+    <input type='text' class='input col m1 center-align' id='qty_2'>
+    <i class="small material-icons col m1 removal center green-text text-lighten-1">add_circle</i>
+    <label for="qty_2"></label>
+  </div>
+
 </div>
 
 </body>
@@ -98,4 +109,22 @@
 <script type="module" src="js/itemDisplay.mjs"></script>
 <script type="module" src="js/constants.mjs"></script>
 <script src="materialize/js/materialize.js"></script>
+
+<script>
+    fetch( '/login', {
+        method:'POST',
+        body:JSON.stringify({ username:'bobo', password:'haha' }),
+        headers: { 'Content-Type': 'application/json' }
+    })
+        .then( res => res.json() )
+        .then( res => console.log(res.status) );
+
+    fetch( '/test', {
+        method:'POST',
+        credentials: 'include'
+    })
+        .then( console.log )
+        .catch( err => console.error )
+</script>
+
 </html>

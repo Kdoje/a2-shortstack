@@ -10,11 +10,15 @@
   "dependencies": {
     "body-parser": "latest",
     "collections": "^5.1.9",
+    "cookie-parser": "^1.4.4",
     "esm": "^3.2.25",
     "express": "^4.17.1",
+    "express-session": "^1.16.2",
     "jasmine": "^3.4.0",
     "materialize-css": "^1.0.0",
     "mime": "^2.4.4",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
     "sqlite3": "^4.1.0"
   },
   "engines": {

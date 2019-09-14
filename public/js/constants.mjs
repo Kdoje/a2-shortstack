@@ -4,6 +4,7 @@ let CONSTANTS={
     SUBMIT: '/submit',
     REMOVE: '/remove',
     GETALL: '/getAll',
+    LOGIN: '/login',
     //buton classes
     PURCHASE_BUTTON: "purchase_button",
     REMOVE_BUTTON: "remove_button",
