@@ -44,6 +44,21 @@ class GroceryItem{
     }
 
     /**
+     * This creates a groceryItem from a user request
+     * @return {GroceryItem}
+     */
+    static groceryItemFromRequest(request){
+        //because the bool is stored as 1 or 0, we need to update that here
+        let body = request.body;
+        let groceryItem = new GroceryItem(body.itemName, request.user, body.purchased, body.quantity);
+        //set the id from the database ID.
+        groceryItem._id=parseInt(body.id); //convert to int for comparison
+        console.log('item from request ');
+        console.log(groceryItem);
+        return groceryItem;
+    }
+
+    /**
      * see if two grocery items are equal by ids
      * @param {GroceryItem}g1
      * @param {GroceryItem}g2

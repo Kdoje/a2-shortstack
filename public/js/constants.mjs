@@ -4,6 +4,7 @@ let CONSTANTS={
     SUBMIT: '/submit',
     REMOVE: '/remove',
     GETALL: '/getAll',
+    UPDATE: '/update',
     //login functions
     LOGIN: '/login',
     CREATE_LIST: '/createList',

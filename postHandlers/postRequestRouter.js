@@ -37,7 +37,7 @@ exports.deleteItem = function (request) {
         dao.removeGroceryById(id)
             .then(allItems => {
                 console.log(dao.getAllItems(request.user).length);
-                resolve(dao.getAllItems());
+                resolve(dao.getAllItems(request.user));
             });
     })
 };
@@ -65,6 +65,18 @@ exports.addItem = function (request) {
         }
     });
 };
+
+exports.updateItem = function(request){
+    let updatedItem = GroceryItem.groceryItemFromRequest(request);
+    //now we have an item from the request
+    return new Promise(resolve => {
+        //now we've updated the item (which has been tested)
+        dao.updateGroceryItem(updatedItem).then(()=>{
+            resolve();
+        })
+    })
+};
+
 /**
  *
  * @param request w/JSON of id <number>, purchased<boolean>
@@ -72,6 +84,7 @@ exports.addItem = function (request) {
  */
 exports.togglePurchase = function (request) {
     //this will take the id and purchase value as a bool and update it
+    console.log('purchased val is '+request.body.purchased);
     return new Promise(resolve => {
             dao.togglePurchase(request.body.id, request.body.purchased).then(() => {
                 resolve();

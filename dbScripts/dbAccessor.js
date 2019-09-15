@@ -101,7 +101,7 @@ class DbAccessor {
                 if (rows) {
                     rows.forEach((row) => {
                         that._listList.add(ListCredentials.listFromDB(row));
-                        console.log(that._listList.length);
+                        // console.log(that._listList.length);
                     });
                     that._db.get(`SELECT last_insert_rowid()`, [], function (err, row) {
                         that._listRowId = row[LAST_ID];
@@ -177,7 +177,7 @@ class DbAccessor {
     togglePurchase(id, newPurchaseVal) {
         let that = this;
         let newPurchaseInt = newPurchaseVal ? 1 : 0;
-        console.log("given id is " + id);
+        console.log("given id is " + id +' purchased val is '+newPurchaseInt);
         return new Promise(resolve => {
             that._db.run(`UPDATE ${that._groceryTableName} SET  ${PURCHASED}=${newPurchaseInt} ` +
                 'WHERE id=?', [id],
@@ -185,7 +185,6 @@ class DbAccessor {
                     if (err) {
                         throw new Error('SQL command failed');
                     }
-                    console.log(newPurchaseInt);
                     resolve();
                 })
         })
@@ -198,8 +197,10 @@ class DbAccessor {
      */
     updateGroceryItem(item){
         let that = this;
+
         this._groceryList.delete(item, GroceryItem.idEqual);
         this._groceryList.add(item);
+        console.log('grocery list len after is '+this._groceryList.length);
         let purchased = item.purchased ? 1 : 0;
         return new Promise(resolve => {
             that._db.run(`UPDATE ${that._groceryTableName} SET `+QUANTITY+'=?, '+PURCHASED+'=?, '

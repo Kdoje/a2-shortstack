@@ -66,6 +66,14 @@ app.post(CONSTANTS.REMOVE, function (request, response) {
     });
 });
 
+app.post(CONSTANTS.UPDATE, function(request, response){
+   let requestOutput = router.updateItem(request);
+   //now we return nothing
+   requestOutput.then(()=>{
+        response.end(JSON.stringify('{}'));
+   })
+});
+
 app.post(CONSTANTS.PURCHASE, function (request, response) {
     let requestOutput = router.togglePurchase(request);
     requestOutput.then(allItems => {

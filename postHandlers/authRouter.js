@@ -46,7 +46,6 @@ exports.initPassport = function (app, passport) {
     // in this example we're using the username
     passport.deserializeUser((username, done) => {
         const user = username;
-        console.log('deserializing:', user);
 
         if (user !== undefined) {
             done(null, user)
