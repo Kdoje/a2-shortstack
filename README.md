@@ -1,7 +1,7 @@
-Kent Libby's Grocery List application
+Kent Libby's Grocery UserLists application
 ---
 
-## Grocery List Online
+## Grocery UserLists Online
 - **Project domain area**: This project serves as an online grocery list
 - **The main challenge the application addresses**: This application allows the user to create a grocery list that is synchronized across all devices accessing it.
 - **Key innovations**: By using a database the data is stored permanently, and allows users to see the same data.

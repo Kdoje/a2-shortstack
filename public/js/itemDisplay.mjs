@@ -107,4 +107,4 @@ const purchaseItem = function () {
     return false;
 };
 
-populateList();
+//populateList();

@@ -2,12 +2,12 @@ import CONSTANTS from './constants.mjs';
 import {insertItem} from './itemDisplay.mjs';
 
 
-const submit = function (e) {
+const add = function (e) {
     // prevent default form action from being carried out
     e.preventDefault();
-    const input = document.querySelector('#item_input'),
-        json = {item: input.value},
-        body = JSON.stringify(json);
+    const item = document.querySelector('#item_input');
+    const qty = document.querySelector('#qty_input');
+    let body = JSON.stringify({item: item.value, qty: qty.value});
     fetch(CONSTANTS.SUBMIT, {
         headers: {
             'Content-Type': 'application/json'
@@ -19,10 +19,14 @@ const submit = function (e) {
         .then((response) => response.json())
         .then(function (item) {
             console.log("sending item");
+            if(item.err){
+                console.log('Please sign in');
+            }
             //this should put the item into the divs when its submitted.
-            insertItem(item);
+            console.log('response was '+item.itemName);
         });
-    input.value = "";
+    item.value = "";
+    qty.value="";
     return false;
 };
 
@@ -34,9 +38,9 @@ const updateList = function (items) {
     })
 };
 
-const addButton = document.getElementById('submit');
+const addButton = document.getElementById('add');
 const deleteButton = document.getElementById('delete');
-//addButton.onclick = submit;
+addButton.onclick = add;
 
 
 document.addEventListener('DOMContentLoaded', function() {

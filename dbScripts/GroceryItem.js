@@ -3,21 +3,23 @@
 const INIT_ID = -1;
 class GroceryItem{
     _id;
+    creator;
     itemName;
     purchased;
-    spot; //this is the position in the list
+    quantity;
 
     /**
      * Create a new grocery item
      * @param {String} itemName
+     * @param {String} creator the username of the creator
      * @param {Boolean} purchased
-     * @param {Number} spot
+     * @param {Number} quantity
      */
-    constructor(itemName, purchased, spot){
-        //we can set the id automatically by using SELECT last_insert_row_id()
+    constructor(itemName, creator, purchased, quantity){
         this.itemName=itemName;
         this.purchased=purchased;
-        this.spot=spot;
+        this.quantity=quantity;
+        this.creator=creator;
     }
 
     /**
@@ -35,7 +37,7 @@ class GroceryItem{
     static groceryItemFromDB(row){
         //because the bool is stored as 1 or 0, we need to update that here
         let purchased = !!row.purchased;
-        let groceryItem = new GroceryItem(row.itemName, purchased, row.spot);
+        let groceryItem = new GroceryItem(row.itemName, row.creator, purchased, row.quantity);
         //set the id from the database ID.
         groceryItem._id=row.id;
         return groceryItem;

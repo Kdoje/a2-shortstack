@@ -36,20 +36,20 @@
   </div></li>
   <li>
     <div class="row input-field">
-      <input type="text" class="input item-input col s10 push-s1" id="uname">
-      <label for="uname" class="col push-s1 s10">list name</label>
+      <input type="text" class="input item-input col s10 push-s1" id="listName">
+      <label for="listName" class="col push-s1 s10">list name</label>
     </div>
   </li>
   <li>
     <div class="row input-field">
-      <input type="password" class="input item-input col s10 push-s1" id="pword">
-      <label for="pword" class="col push-s1 s10">password</label>
+      <input type="password" class="input item-input col s10 push-s1" id="password">
+      <label for="password" class="col push-s1 s10">password</label>
     </div>
   </li>
   <li>
     <div class="row">
       <button class="waves-effect waves-light blue-grey darken-1 btn-small col s3 push-s2" id="login">Login</button>
-      <button class="waves-effect waves-light blue-grey darken-1 btn-small col s3 push-s3" id="create_list">Create List</button>
+      <button class="waves-effect waves-light blue-grey darken-1 btn-small col s3 push-s3" id="create_list">Create UserLists</button>
     </div>
   </li>
 </ul>
@@ -108,23 +108,24 @@
 <script type="module" src="js/addItemBar.js"></script>
 <script type="module" src="js/itemDisplay.mjs"></script>
 <script type="module" src="js/constants.mjs"></script>
+<script type="module" src="js/login.mjs"></script>
 <script src="materialize/js/materialize.js"></script>
 
-<script>
-    fetch( '/login', {
-        method:'POST',
-        body:JSON.stringify({ username:'bobo', password:'haha' }),
-        headers: { 'Content-Type': 'application/json' }
-    })
-        .then( res => res.json() )
-        .then( res => console.log(res.status) );
+<!--<script>-->
+<!--    fetch( '/login', {-->
+<!--        method:'POST',-->
+<!--        body:JSON.stringify({ username:'bobo', password:'haha' }),-->
+<!--        headers: { 'Content-Type': 'application/json' }-->
+<!--    })-->
+<!--        .then( res => res.json() )-->
+<!--        .then( res => console.log(res.status) );-->
 
-    fetch( '/test', {
-        method:'POST',
-        credentials: 'include'
-    })
-        .then( console.log )
-        .catch( err => console.error )
-</script>
+<!--    fetch( '/test', {-->
+<!--        method:'POST',-->
+<!--        credentials: 'include'-->
+<!--    })-->
+<!--        .then( console.log )-->
+<!--        .catch( err => console.error )-->
+<!--</script>-->
 
 </html>

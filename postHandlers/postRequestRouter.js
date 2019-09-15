@@ -5,11 +5,9 @@
  */
 const DbAccessor = require('../dbScripts/dbAccessor').DbAccessor;
 const GroceryItem = require('../dbScripts/GroceryItem').GroceryItem;
-const DB_FILE = './.data/sqlite.db';
-const TABLE_NAME = 'Grocery';
 
-let dao = new DbAccessor(DB_FILE, TABLE_NAME);
-dao.initItemList().then();
+//intialize the dao so it can be set by the server
+let dao = new DbAccessor('', '', '');
 //this is for injection of a mock DbAccessor
 exports.setDao = function (daoToSet) {
     dao = daoToSet;
@@ -24,8 +22,8 @@ exports.setDao = function (daoToSet) {
 exports.getAllGroceryItems = function (request) {
     return new Promise(async function (resolve) {
         //make sure we get all changes to the item list when we send it out
-        await dao.initItemList();
-        resolve(dao.getAllItems());
+        await dao.initLists();
+        resolve(dao.getAllItems(request.user));
     });
 };
 /**
@@ -39,7 +37,7 @@ exports.deleteItem = function (request) {
         id = parseInt(id);
         dao.removeGroceryById(id)
             .then(allItems => {
-                console.log(dao.getAllItems().length);
+                console.log(dao.getAllItems(request.user).length);
                 resolve(dao.getAllItems());
             });
     })
@@ -49,16 +47,23 @@ exports.deleteItem = function (request) {
  * @param request
  * @returns {Promise<GroceryItem>}
  */
-exports.updateItems = function (request) {
+exports.addItem = function (request) {
     return new Promise(resolve => {
         let name = request.body.item.toString();
-        let newItem = new GroceryItem(name, false, 0);
-        dao.addGroceryItem(newItem)
-        //we only want single item we added so we have an id
-            .then(item => {
-                console.log(item._id);
-                resolve(item);
-            });
+        let qty = parseInt(request.body.qty);
+        //what do we do if there's no user
+        if(!request.user){
+            console.log('no user defined');
+            resolve({err: true})
+        }else {
+            let newItem = new GroceryItem(name, request.user, false, qty);
+            dao.addGroceryItem(newItem)
+            //we only want single item we added so we have an id
+                .then(item => {
+                    console.log('adding item ' + item);
+                    resolve(item);
+                });
+        }
     });
 };
 /**
