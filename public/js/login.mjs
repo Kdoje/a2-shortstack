@@ -20,7 +20,10 @@ const createList = function (e) {
     })
         .then(response => response.json())
         .then(function (response){
-            console.log(response);
+            if(!response.added){
+                M.toast({html: 'account already exists'});
+                return false;
+            }
             populateList();
         })
 };
@@ -35,7 +38,15 @@ const login = function (e){
         method: 'POST',
         body
     })
-        .then(response => response.json())
+        .then(response =>{
+            if(response.status === 401){
+                M.toast({html: 'Login failed due to\n' +
+                        'bad username or password.'});
+                return false;
+            } else{
+                return response.json();
+            }
+        })
         .then(function (response){
             if(response){
                 console.log('repopulating on login');

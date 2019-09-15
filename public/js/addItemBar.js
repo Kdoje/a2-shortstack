@@ -7,6 +7,10 @@ const add = function (e) {
     e.preventDefault();
     const item = document.querySelector('#item_input');
     const qty = document.querySelector('#qty_input');
+    if(!parseInt(qty.value)){
+        M.toast({html: 'Please enter numeric value for quantity'});
+        return false;
+    }
     let body = JSON.stringify({item: item.value, qty: qty.value});
     fetch(CONSTANTS.SUBMIT, {
         headers: {
@@ -20,7 +24,10 @@ const add = function (e) {
         .then(function (item) {
             console.log("sending item");
             if(item.err){
+                M.toast({html: 'Please sign in or create account\n' +
+                        'press the button on the bottom left'});
                 console.log('Please sign in');
+                return false;
             }
             //this should put the item into the divs when its submitted.
             console.log(item);

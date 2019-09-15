@@ -1,6 +1,13 @@
 Kent Libby's Grocery UserLists application
 ---
 
+middlewares:
+favicon
+passport
+static
+body-parser
+morgan
+
 ## Grocery UserLists Online
 - **Project domain area**: This project serves as an online grocery list
 - **The main challenge the application addresses**: This application allows the user to create a grocery list that is synchronized across all devices accessing it.

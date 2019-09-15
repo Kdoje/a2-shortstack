@@ -4,7 +4,12 @@ import CONSTANTS from './public/js/constants.mjs';
 //express imports
 const express = require('express');
 const app = express();
+const path = require('path');
 const bodyParser = require('body-parser');
+const favicon = require('serve-favicon');
+//morgan inputs
+const morgan = require('morgan');
+const fs = require('fs');
 //passport import
 const passport = require('passport');
 
@@ -27,12 +32,15 @@ dao.initLists().then( ()=>{
     passportHandler.setDao(dao);
 });
 
-//port
+let accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' });
 
-const port = 3000;
-
+// setup the logger
+app.use(morgan('combined', { stream: accessLogStream }));
+//provide favicon
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 // Provide files from node_modules
 app.use('/materialize', express.static(__dirname + '/node_modules/materialize-css/dist'));
+
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json({type: 'application/json'}));
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
@@ -82,5 +90,8 @@ app.post(CONSTANTS.PURCHASE, function (request, response) {
         }
     });
 });
+
+//port
+const port = 3000;
 
 app.listen(process.env.PORT || port);

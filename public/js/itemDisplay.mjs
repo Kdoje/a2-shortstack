@@ -47,10 +47,10 @@ export const insertItem = function (item) {
     </label>
     <input type='text' name='itemName' class='input col m7 tester' value="${item.itemName}" id='${ITEM}${item._id}'>
     <label for="${ITEM}${item._id}"></label>
-    <i class="small material-icons col m1 ${REDUCE} clickable red-text text-lighten-1">remove_circle</i>
+    <i class="small center material-icons col m1 ${REDUCE} clickable red-text text-lighten-1">remove_circle</i>
     <input type='text' name="qty" class='input col m1 center-align' id='${QTY}${item._id}' value="${item.quantity}"> 
     <label for="${QTY}${item._id}"></label>
-    <i class="small material-icons col m1 ${ADD} clickable green-text text-lighten-1">add_circle</i>
+    <i class="small center material-icons col m1 ${ADD} clickable green-text text-lighten-1">add_circle</i>
   </div>`;
 
     console.log("id is " + item._id);
@@ -97,14 +97,10 @@ const updateName = function(e){
         let id = thisParent.id;
         let itemName = document.getElementById('' + ITEM + id).value;
         let quantity = document.getElementById('' + QTY + id).value;
-        try{
-            parseInt(quantity);
-        }
-        catch(error){
-            console.log('please insert a valid number');
+        if(!parseInt(quantity)){
+            M.toast({html: 'Please enter numeric value for quantity'});
             return false;
         }
-        //TODO rename test_checkbox to something that makes more sense
         let purchased = thisParent.querySelector('input[name=purchased').checked;
         let body = {
             id: id,
@@ -135,7 +131,6 @@ const changeQty = function(modifier){
         let id = thisParent.id;
         let itemName = document.getElementById('' + ITEM + id).value;
         let quantity = document.getElementById('' + QTY + id).value;
-        //TODO rename test_checkbox to something that makes more sense
         let purchased = thisParent.querySelector('input[name=purchased').checked;
 
         let body = {

@@ -1,6 +1,5 @@
 import CONSTANTS from "../public/js/constants";
 
-const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const Local = require('passport-local').Strategy;
 const DbAccessor = require('../dbScripts/dbAccessor').DbAccessor;
