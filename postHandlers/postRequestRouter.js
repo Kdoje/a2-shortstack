@@ -22,7 +22,6 @@ exports.setDao = function (daoToSet) {
 exports.getAllGroceryItems = function (request) {
     return new Promise(async function (resolve) {
         //make sure we get all changes to the item list when we send it out
-        await dao.initLists();
         resolve(dao.getAllItems(request.user));
     });
 };

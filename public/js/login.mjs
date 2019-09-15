@@ -1,4 +1,5 @@
 import CONSTANTS from './constants.mjs';
+import {populateList} from './itemDisplay.mjs';
 
 const getLoginInput = function() {
     const listName = document.getElementById('listName');
@@ -20,6 +21,7 @@ const createList = function (e) {
         .then(response => response.json())
         .then(function (response){
             console.log(response);
+            populateList();
         })
 };
 
@@ -35,6 +37,12 @@ const login = function (e){
     })
         .then(response => response.json())
         .then(function (response){
+            if(response){
+                console.log('repopulating on login');
+                populateList();
+            } else{
+                console.log('not doing that');
+            }
             console.log(response.status);
         })
 };

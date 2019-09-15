@@ -17,7 +17,7 @@ Secondary-dark:#4ba3c7
     height:100%;
 }
 
-.removal{
+.clickable{
     cursor: pointer;
 }
 /*this uses blue-grey.darken-1

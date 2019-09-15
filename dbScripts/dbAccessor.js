@@ -93,7 +93,6 @@ class DbAccessor {
                 }
             });
         });
-
         let listsPopulate = new Promise(resolve => {
             that._db.all(`SELECT * FROM ${that._listTableName}`, [], function (err, rows) {
                 if (err) {

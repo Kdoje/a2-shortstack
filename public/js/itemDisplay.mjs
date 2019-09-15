@@ -1,10 +1,13 @@
 import CONSTANTS from './constants.mjs';
+const PURCHASED = "card col s8 offset-s2 grey valign-wrapper";
+const UNPURCHASED = "card col s8 offset-s2 grey lighten-5 valign-wrapper";
 
 const getContainer = function () {
     return document.getElementById('data');
 };
-const populateList = function () {
-    //getContainer().innerHTML = "";
+export const populateList = function () {
+    console.log('refreshing items');
+    getContainer().innerHTML = "";
     const body = JSON.stringify('{}');
     fetch(CONSTANTS.GETALL, {
         method: 'POST',
@@ -15,7 +18,7 @@ const populateList = function () {
             items.forEach((item) => {
                 insertItem(item);
             });
-            attachListeners();
+           // attachListeners();
         });
 };
 
@@ -27,7 +30,8 @@ const attachListeners = function () {
     }
     console.log("button length list " +purchasedButtons.length);
     for (const buttons of purchasedButtons){
-        buttons.onclick = purchaseItem.bind(buttons);
+        //figure out how to read the state of the checkbox.
+        buttons.onclick = purchaseItem;
     }
 };
 
@@ -37,14 +41,21 @@ const attachListeners = function () {
  * @param item - json string
  */
 export const insertItem = function (item) {
-    let divClass= item.purchased ? CONSTANTS.PURCHASED_ITEM : CONSTANTS.ITEM;
+    let divClass= item.purchased ? PURCHASED : UNPURCHASED;
     console.log(divClass);
     getContainer().innerHTML +=
-        `<div class="${divClass}" id=${item._id}>
-          <button class=${CONSTANTS.PURCHASE_BUTTON}>✓</button>
-          <p>${item.itemName}</p>
-          <button class=${CONSTANTS.REMOVE_BUTTON}>X</button>
-     </div>`;
+        `  <div class="${divClass}" id="${item._id}">
+    <i class="small material-icons col m1 red-text text-darken-2 clickable ${CONSTANTS.REMOVE_BUTTON}">delete</i>
+    <label class="col m1 valign-wrapper center purchase_button">
+      <input type="checkbox"/>
+      <span class="black-text input center"></span>
+    </label>
+    <input type='text' class='input col m7 tester' value="${item.itemName}" id='item${item._id}'>
+    <label for="item${item._id}"></label>
+    <i class="small material-icons col m1 removal clickable red-text text-lighten-1">remove_circle</i>
+    <input type='text' class='input col m1 center-align' id='qty${item._id}' value="${item.quantity}"> <label for="qty${item._id}"></label>
+    <i class="small material-icons col m1 removal clickable green-text text-lighten-1">add_circle</i>
+  </div>`;
 
     console.log("id is " + item._id);
     // Assigning the handlers individually breaks the other listeners so I
@@ -73,16 +84,16 @@ const removeItem = function () {
     return false;
 };
 
-const purchaseItem = function () {
-    let thisParent = this.parentNode;
+const purchaseItem = function (e) {
+    let thisParent = e.target.parentNode;
     let id = thisParent.id;
     let purchased=false;
     //use the class name to store the purchase value locally
-    if(thisParent.className===CONSTANTS.ITEM){
-        thisParent.className=CONSTANTS.PURCHASED_ITEM;
+    if(thisParent.className===PURCHASED){
+        thisParent.className=UNPURCHASED;
         purchased=true;
     }else{
-        thisParent.className=CONSTANTS.ITEM;
+        thisParent.className=PURCHASED;
         purchased=false;
     }
 
@@ -102,9 +113,8 @@ const purchaseItem = function () {
         .then((response) => response.json())
         .then(function () {
             console.log("purchased is "+purchased);
-            //get rid of the object by calling the parent of the parent
         });
     return false;
 };
 
-//populateList();
+populateList();

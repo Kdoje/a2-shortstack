@@ -23,23 +23,16 @@ const add = function (e) {
                 console.log('Please sign in');
             }
             //this should put the item into the divs when its submitted.
-            console.log('response was '+item.itemName);
+            console.log(item);
+            insertItem(item);
         });
     item.value = "";
     qty.value="";
     return false;
 };
 
-const updateList = function (items) {
-    let list = document.getElementById('table_contents');
-    list.innerText = "";
-    items.forEach((item) => {
-        list.innerText += item._id + " " + item.itemName + ' \n';
-    })
-};
 
 const addButton = document.getElementById('add');
-const deleteButton = document.getElementById('delete');
 addButton.onclick = add;
 
 
